@@ -2,7 +2,7 @@
 
 ## Phase 0 – App Shell & UI Basics
 
-- Create basic single-page React app structure with pnpm, Vite, and Tailwind CCS v4
+- Create basic, responsive single-page React app structure with pnpm, Vite, and Tailwind CCS v4
 - Display project title (e.g. **Game Gestures**)
   - Title intentionally references game terminology
   - “GG” as a playful nod to _Git Gud_
@@ -17,6 +17,9 @@
 - Wire selected effect into app state
   - No gesture logic yet
   - Effect selection should flow into later gesture/effect system
+- The video container should be responsive based on the orientation of the user's device.
+  - Horizontal: Display a 16:9 aspect ratio video.
+  - Vertical: Display a 9:16 aspect ratio video.
 
 ---
 
