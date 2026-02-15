@@ -1,5 +1,5 @@
 import { Bug, FlipHorizontal2 } from "lucide-react";
-import EffectSelector from "@/components/EffectSelector";
+import EffectSelector from "@/components/EffectSelector/EffectSelector";
 import { useCameraStore } from "@/store/camera-store";
 import { cn } from "@/lib/utils";
 
