@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/Header/Header";
 import CameraFeed from "@/components/camera/CameraFeed";
 
 function App() {
