@@ -1,5 +1,11 @@
 import type { NormalizedLandmark, Landmark } from "@mediapipe/tasks-vision";
-import { distance2D, clamp, radToDeg, normalizeAngle } from "@/lib/math/math";
+import {
+  distance2D,
+  clamp,
+  radToDeg,
+  normalizeAngle,
+  degToRad,
+} from "@/lib/math/math";
 import { HAND_LANDMARKS, CURL_FINGERS } from "@/types/gestures/landmarks";
 import type { ThumbsUpDetection } from "../../types/gestures/types";
 
@@ -11,8 +17,11 @@ const THUMB_EXTENSION_RATIO = 1.3;
 /** Finger tip-to-MCP distance must be <= this multiple of pip-to-MCP distance to count as curled. */
 const FINGER_CURL_RATIO = 1.2;
 
-/** Max angle (radians) between thumb direction and straight-up for valid orientation. ~60 degrees. */
-const MAX_THUMB_ANGLE_FROM_UP = Math.PI / 3;
+/** Max angle (degrees) between thumb direction and straight-up for valid orientation. */
+export const MAX_DETECTION_ANGLE_DEG = 75;
+
+/** Max angle (radians) derived from MAX_DETECTION_ANGLE_DEG. */
+const MAX_THUMB_ANGLE_FROM_UP = degToRad(MAX_DETECTION_ANGLE_DEG);
 
 /** Minimum confidence score required to report detected = true. */
 const MIN_CONFIDENCE = 0.55;
@@ -29,6 +38,11 @@ export function detectThumbsUp(
   landmarks: NormalizedLandmark[],
   worldLandmarks: Landmark[],
 ): ThumbsUpDetection {
+  // Shared landmarks used in both early-return and successful paths
+  const wrist = landmarks[HAND_LANDMARKS.WRIST];
+  const middleMcp = landmarks[HAND_LANDMARKS.MIDDLE_FINGER_MCP];
+  const handScale = distance2D(wrist, middleMcp);
+
   const noDetection: ThumbsUpDetection = {
     detected: false,
     confidence: 0,
@@ -37,10 +51,11 @@ export function detectThumbsUp(
       y: landmarks[HAND_LANDMARKS.THUMB_TIP].y,
     },
     angleDegrees: 0,
+    thumbAngleFromVerticalDeg: 0,
+    handScale,
   };
 
   // --- Condition A: Thumb is extended ---
-  const wrist = landmarks[HAND_LANDMARKS.WRIST];
   const thumbMcp = landmarks[HAND_LANDMARKS.THUMB_MCP];
   const thumbTip = landmarks[HAND_LANDMARKS.THUMB_TIP];
 
@@ -121,11 +136,17 @@ export function detectThumbsUp(
   // --- Angle calculation (palm rotation, 0-360 degrees) ---
   const angleDegrees = computePalmAngle(worldLandmarks);
 
+  // --- Signed angle from vertical (for tilt direction) ---
+  // atan2(thumbDirX, -thumbDirY): positive = leaning right, negative = leaning left
+  const signedAngleFromUp = Math.atan2(thumbDirX, -thumbDirY);
+
   return {
     detected: true,
     confidence,
     thumbTipPosition: { x: thumbTip.x, y: thumbTip.y },
     angleDegrees,
+    thumbAngleFromVerticalDeg: radToDeg(signedAngleFromUp),
+    handScale,
   };
 }
 
