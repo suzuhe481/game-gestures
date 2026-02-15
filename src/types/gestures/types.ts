@@ -5,10 +5,19 @@ export type ThumbsUpDetection = {
   thumbTipPosition: { x: number; y: number };
   /** Palm rotation angle in degrees (0 = front, 90 = side), normalized 0-360. */
   angleDegrees: number;
+  /** Signed angle of thumb from vertical in degrees. Positive = leaning right, negative = left. */
+  thumbAngleFromVerticalDeg: number;
+  /** Apparent hand size in normalized coords (wrist-to-middle-MCP distance). Larger = closer to camera. */
+  handScale: number;
 };
 
 /** Gesture state machine phase. */
-export type GesturePhase = "IDLE" | "CANDIDATE" | "CONFIRMED" | "COOLDOWN";
+export type GesturePhase =
+  | "IDLE"
+  | "CANDIDATE"
+  | "CONFIRMED"
+  | "COOLDOWN"
+  | "HELD";
 
 /** Per-hand gesture state tracked across frames. */
 export type GestureState = {
