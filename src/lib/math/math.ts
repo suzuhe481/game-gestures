@@ -24,3 +24,8 @@ export function radToDeg(rad: number): number {
 export function normalizeAngle(degrees: number): number {
   return ((degrees % 360) + 360) % 360;
 }
+
+/** Convert degrees to radians. */
+export function degToRad(deg: number): number {
+  return deg * (Math.PI / 180);
+}

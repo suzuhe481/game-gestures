@@ -12,7 +12,8 @@ const PHASE_COLORS: Record<GesturePhase, string> = {
   IDLE: "text-gg-text-secondary",
   CANDIDATE: "text-amber-400",
   CONFIRMED: "text-emerald-400",
-  COOLDOWN: "text-blue-400/60",
+  COOLDOWN: "text-blue-400",
+  HELD: "text-orange-400",
 };
 
 /**
@@ -98,6 +99,10 @@ function HandDebugInfo({
         value={
           detection?.detected ? `${detection.angleDegrees.toFixed(1)}°` : "--"
         }
+      />
+      <Row
+        label="Hand Scale"
+        value={detection ? detection.handScale.toFixed(3) : "--"}
       />
     </div>
   );

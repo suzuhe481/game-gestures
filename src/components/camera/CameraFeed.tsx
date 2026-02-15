@@ -4,9 +4,11 @@ import { useOrientation } from "@/hooks/useOrientation";
 import { useCamera } from "@/hooks/useCamera";
 import { useHandTracking } from "@/hooks/useHandTracking";
 import { useGestureDetection } from "@/hooks/useGestureDetection";
+import { useEffectManager } from "@/hooks/useEffectManager";
 import { useCameraStore } from "@/store/camera-store";
 import { cn } from "@/lib/utils";
 import DebugOverlay from "@/components/DebugOverlay/DebugOverlay";
+import EffectsOverlay from "@/components/EffectsOverlay/EffectsOverlay";
 import GestureDebugPanel from "@/components/GestureDebugPanel/GestureDebugPanel";
 
 /**
@@ -37,6 +39,10 @@ function CameraFeed() {
   const { status: cameraStatus, error } = useCamera(videoRef, isCameraEnabled);
   const { resultsRef } = useHandTracking(videoRef, cameraStatus === "active");
   const gestureRef = useGestureDetection(resultsRef, cameraStatus === "active");
+  const effectInstancesRef = useEffectManager(
+    gestureRef,
+    cameraStatus === "active",
+  );
 
   return (
     <div
@@ -67,6 +73,15 @@ function CameraFeed() {
             videoRef={videoRef}
             resultsRef={resultsRef}
             active={isDebugEnabled}
+          />
+        )}
+
+        {/* Effects overlay */}
+        {isCameraEnabled && cameraStatus === "active" && (
+          <EffectsOverlay
+            videoRef={videoRef}
+            effectInstancesRef={effectInstancesRef}
+            active={cameraStatus === "active"}
           />
         )}
 

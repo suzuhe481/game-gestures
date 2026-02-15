@@ -75,6 +75,26 @@ export function tickGestureState(
 
     case "COOLDOWN":
       if (elapsed >= GESTURE_TIMING.COOLDOWN_DURATION_MS) {
+        if (detection) {
+          return {
+            state: { ...state, phase: "HELD", phaseStartedAt: now },
+            event: null,
+          };
+        }
+        return {
+          state: {
+            ...state,
+            phase: "IDLE",
+            phaseStartedAt: now,
+            confirmedData: null,
+          },
+          event: null,
+        };
+      }
+      return { state, event: null };
+
+    case "HELD":
+      if (!detection) {
         return {
           state: {
             ...state,
