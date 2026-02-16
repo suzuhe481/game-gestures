@@ -5,7 +5,12 @@ import { useCamera } from "@/hooks/useCamera";
 import { useHandTracking } from "@/hooks/useHandTracking";
 import { useGestureDetection } from "@/hooks/useGestureDetection";
 import { useEffectManager } from "@/hooks/useEffectManager";
+import { useAudio } from "@/hooks/useAudio";
 import { useCameraStore } from "@/store/camera-store";
+import {
+  initAudioContext,
+  resumeAudioContext,
+} from "@/lib/audio/audioEngine";
 import { cn } from "@/lib/utils";
 import DebugOverlay from "@/components/DebugOverlay/DebugOverlay";
 import EffectsOverlay from "@/components/EffectsOverlay/EffectsOverlay";
@@ -43,6 +48,7 @@ function CameraFeed() {
     gestureRef,
     cameraStatus === "active",
   );
+  useAudio(gestureRef, cameraStatus === "active");
 
   return (
     <div
@@ -106,7 +112,11 @@ function CameraFeed() {
             </div>
             <p className="text-sm">Camera feed will appear here</p>
             <button
-              onClick={enableCamera}
+              onClick={() => {
+                enableCamera();
+                initAudioContext();
+                resumeAudioContext();
+              }}
               className="flex items-center gap-2 rounded-md border border-gg-accent/30 bg-gg-accent/10 px-4 py-2 text-sm text-gg-accent transition-colors hover:bg-gg-accent/20"
             >
               <Camera className="size-4" />
