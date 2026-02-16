@@ -1,6 +1,8 @@
-import { Bug, FlipHorizontal2 } from "lucide-react";
+import { Bug, FlipHorizontal2, Volume2, VolumeX } from "lucide-react";
 import EffectSelector from "@/components/EffectSelector/EffectSelector";
 import { useCameraStore } from "@/store/camera-store";
+import { useAudioStore } from "@/store/audio-store";
+import { resumeAudioContext } from "@/lib/audio/audioEngine";
 import { cn } from "@/lib/utils";
 
 /**
@@ -22,6 +24,13 @@ function Header() {
   const isMirrored = useCameraStore((s) => s.isMirrored);
   const toggleDebug = useCameraStore((s) => s.toggleDebug);
   const toggleMirror = useCameraStore((s) => s.toggleMirror);
+  const isMuted = useAudioStore((s) => s.isMuted);
+  const toggleMute = useAudioStore((s) => s.toggleMute);
+
+  const handleMuteToggle = () => {
+    resumeAudioContext();
+    toggleMute();
+  };
 
   return (
     <header className="flex w-full flex-wrap items-center justify-between gap-3 px-6 py-4">
@@ -43,6 +52,23 @@ function Header() {
               title="Toggle mirror mode"
             >
               <FlipHorizontal2 className="size-4" />
+            </button>
+            <button
+              onClick={handleMuteToggle}
+              className={cn(
+                "rounded-md border p-1.5 transition-colors",
+                !isMuted
+                  ? "border-gg-accent/30 bg-gg-accent/10 text-gg-accent"
+                  : "border-gg-border bg-transparent text-gg-text-secondary hover:text-gg-text-primary",
+              )}
+              aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+              title={isMuted ? "Unmute audio" : "Mute audio"}
+            >
+              {isMuted ? (
+                <VolumeX className="size-4" />
+              ) : (
+                <Volume2 className="size-4" />
+              )}
             </button>
             <button
               onClick={toggleDebug}
