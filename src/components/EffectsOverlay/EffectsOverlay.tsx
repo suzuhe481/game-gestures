@@ -42,7 +42,7 @@ function EffectsOverlay({
   }, [videoRef]);
 
   // Draw effects each frame
-  useAnimationFrame(() => {
+  useAnimationFrame((time) => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
     if (!canvas || !video) return;
@@ -86,7 +86,7 @@ function EffectsOverlay({
     );
 
     for (const instance of instances) {
-      drawHeartEffect(ctx, instance, drawW, drawH);
+      drawHeartEffect(ctx, instance, drawW, drawH, time);
     }
 
     ctx.restore();
