@@ -52,7 +52,7 @@ export type GestureSnapshot = {
 /** Timing constants for the gesture state machine. */
 export const GESTURE_TIMING = {
   /** How long a gesture must be held before confirming (ms). */
-  CANDIDATE_DURATION_MS: 500,
+  CANDIDATE_DURATION_MS: 100,
   /** Cooldown period after confirmation before re-triggering (ms). */
-  COOLDOWN_DURATION_MS: 1500,
+  COOLDOWN_DURATION_MS: 1000,
 } as const;
