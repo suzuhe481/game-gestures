@@ -309,10 +309,12 @@ function drawPhase3_Heart(
  *   2. Caret drifts upward     (progress diamondEnd – caretEnd)
  *   3. Heart sequence          (progress caretEnd – 1.0)
  *
- * @param ctx - The 2D rendering context (with object-cover transform active).
+ * @param ctx - The 2D rendering context (identity transform).
  * @param instance - The effect instance to draw.
- * @param drawW - Full draw-space width.
- * @param drawH - Full draw-space height.
+ * @param drawW - Full draw-space width (video scaled to fill container).
+ * @param drawH - Full draw-space height (video scaled to fill container).
+ * @param offsetX - Horizontal crop offset for object-cover alignment.
+ * @param offsetY - Vertical crop offset for object-cover alignment.
  * @param time - Current timestamp from requestAnimationFrame.
  */
 export function drawHeartEffect(
@@ -320,6 +322,8 @@ export function drawHeartEffect(
   instance: EffectInstance,
   drawW: number,
   drawH: number,
+  offsetX: number,
+  offsetY: number,
   time: number,
 ): void {
   const elapsed = time - instance.spawnTime;
@@ -327,8 +331,8 @@ export function drawHeartEffect(
 
   const progress = elapsed / TOTAL_MS;
 
-  const centerX = instance.x * drawW;
-  const centerY = instance.y * drawH;
+  const centerX = instance.x * drawW - offsetX;
+  const centerY = instance.y * drawH - offsetY;
   const size = instance.sizeFraction * drawH;
 
   ctx.save();
