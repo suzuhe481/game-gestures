@@ -37,9 +37,9 @@ function Header() {
       <h1 className="text-2xl font-bold tracking-tight text-gg-accent">
         Game Gestures
       </h1>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {isCameraEnabled && (
-          <>
+          <div className="flex items-center gap-2">
             <button
               onClick={toggleMirror}
               className={cn(
@@ -83,7 +83,7 @@ function Header() {
             >
               <Bug className="size-4" />
             </button>
-          </>
+          </div>
         )}
         <EffectSelector />
       </div>
