@@ -76,17 +76,9 @@ function EffectsOverlay({
     }
 
     ctx.save();
-    ctx.setTransform(
-      drawW / containerW,
-      0,
-      0,
-      drawH / containerH,
-      -offsetX,
-      -offsetY,
-    );
 
     for (const instance of instances) {
-      drawHeartEffect(ctx, instance, drawW, drawH, time);
+      drawHeartEffect(ctx, instance, drawW, drawH, offsetX, offsetY, time);
     }
 
     ctx.restore();
