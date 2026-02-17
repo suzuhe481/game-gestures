@@ -41,8 +41,10 @@ export type EffectInstance = {
   x: number;
   /** Normalized y position (MediaPipe space, 0-1). Fixed at spawn, offset above thumb. */
   y: number;
-  /** Size as a fraction of drawH, frozen at spawn based on hand distance. */
+  /** Size as a fraction of the reference dimension (min of drawW, drawH), frozen at spawn based on hand distance. */
   sizeFraction: number;
+  /** Normalized Y offset above thumb tip, scaled at render time by the reference dimension. */
+  yOffset: number;
   /** Timestamp (ms) when this effect was spawned. */
   spawnTime: number;
   /** Current lifecycle phase. */

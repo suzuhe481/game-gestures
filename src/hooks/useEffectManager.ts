@@ -73,8 +73,9 @@ export function useEffectManager(
           instancesRef.current.push({
             id: nextIdRef.current++,
             x: thumbTipPosition.x,
-            y: thumbTipPosition.y - yOffset,
+            y: thumbTipPosition.y,
             sizeFraction,
+            yOffset,
             spawnTime: time,
             phase: "fade-in",
             opacity: 0,
