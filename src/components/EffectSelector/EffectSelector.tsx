@@ -13,7 +13,7 @@ function EffectSelector() {
   const selectEffect = useEffectsStore((s) => s.selectEffect);
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex min-w-0 items-center gap-3">
       <label
         htmlFor="effect-select"
         className="text-sm text-gg-text-secondary whitespace-nowrap"
@@ -21,7 +21,7 @@ function EffectSelector() {
         Effect
       </label>
       <Select value={selectedEffectId} onValueChange={selectEffect}>
-        <SelectTrigger className="w-65" id="effect-select">
+        <SelectTrigger className="w-65 max-w-full" id="effect-select">
           <SelectValue placeholder="Select an effect" />
         </SelectTrigger>
         <SelectContent>
