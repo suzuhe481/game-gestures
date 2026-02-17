@@ -316,6 +316,9 @@ function drawPhase3_Heart(
  * @param offsetX - Horizontal crop offset for object-cover alignment.
  * @param offsetY - Vertical crop offset for object-cover alignment.
  * @param time - Current timestamp from requestAnimationFrame.
+ *
+ * Effect size and Y offset scale with min(drawW, drawH) to stay
+ * proportionate regardless of camera aspect ratio (e.g. 9:16 mobile).
  */
 export function drawHeartEffect(
   ctx: CanvasRenderingContext2D,
@@ -331,9 +334,10 @@ export function drawHeartEffect(
 
   const progress = elapsed / TOTAL_MS;
 
+  const refDim = Math.min(drawW, drawH);
   const centerX = instance.x * drawW - offsetX;
-  const centerY = instance.y * drawH - offsetY;
-  const size = instance.sizeFraction * drawH;
+  const centerY = instance.y * drawH - offsetY - instance.yOffset * refDim;
+  const size = instance.sizeFraction * refDim;
 
   ctx.save();
   ctx.translate(centerX, centerY);
